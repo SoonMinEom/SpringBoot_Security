@@ -3,6 +3,8 @@ package com.hospital.review.service;
 import com.hospital.review.domain.User;
 import com.hospital.review.domain.dto.UserDto;
 import com.hospital.review.domain.dto.UserJoinRequest;
+import com.hospital.review.exception.ErrorCode;
+import com.hospital.review.exception.HospitalReviewAppException;
 import com.hospital.review.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,7 @@ public class UserService {
         //중복체크 = 검색한 유저 네임이 있을 때.
         userRepository.findByUserName(request.getUserName())
                 .ifPresent(user-> {
-                    throw new RuntimeException("이미 존재하는 UserName 입니다.");
+                    throw new HospitalReviewAppException(ErrorCode.DUPLICATED_USER_NAME,"이미 존재하는 UserName 입니다.");
                 });
         //회원가입
         User savedUser = userRepository.save(request.toEntity());
