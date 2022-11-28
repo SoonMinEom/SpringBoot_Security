@@ -20,7 +20,9 @@ public class UserService {
 
         //중복체크 = 검색한 유저 네임이 있을 때.
         userRepository.findByUserName(request.getUserName())
-                .ifPresent(user->new RuntimeException("이미 존재하는 UserName 입니다."));
+                .ifPresent(user-> {
+                    throw new RuntimeException("이미 존재하는 UserName 입니다.");
+                });
         //회원가입
         User savedUser = userRepository.save(request.toEntity());
         return UserDto.builder()
