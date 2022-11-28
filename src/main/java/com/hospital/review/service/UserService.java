@@ -23,7 +23,7 @@ public class UserService {
         //중복체크 = 검색한 유저 네임이 있을 때.
         userRepository.findByUserName(request.getUserName())
                 .ifPresent(user-> {
-                    throw new HospitalReviewAppException(ErrorCode.DUPLICATED_USER_NAME,"이미 존재하는 UserName 입니다.");
+                    throw new HospitalReviewAppException(ErrorCode.DUPLICATED_USER_NAME,ErrorCode.DUPLICATED_USER_NAME.getMessage());
                 });
         //회원가입
         User savedUser = userRepository.save(request.toEntity());
