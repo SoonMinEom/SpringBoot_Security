@@ -35,4 +35,18 @@ public class UserService {
                 .email(savedUser.getEmailAddress())
                 .build();
     }
+
+    public String login(String userName, String password) {
+        // 유저네임있는지 확인(없으면 NOT_FOUND에러)
+        User user = userRepository.findByUserName(userName)
+                .orElseThrow(()->new HospitalReviewAppException(ErrorCode.NOT_FOUND,String.format("%s는 존재하지 않는 아이디 입니다.", userName)));
+
+        // 패스워드 일치하는지 확인
+        if(!encoder.matches(password, user.getPassword())) {
+            throw new HospitalReviewAppException(ErrorCode.INVALID_PASSWORD,"ID또는 PASSWORD가 잘못 되었습니다.");
+        };
+
+        // 두가지 확인 성공하면 토큰 발행
+        return "";
+    }
 }
