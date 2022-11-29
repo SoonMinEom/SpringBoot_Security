@@ -14,6 +14,7 @@ public class Response <T>{
     }
 
     public static <T> Response<T> success(T result) {
+
         return new Response("SUCCESS", result);
     }
 }

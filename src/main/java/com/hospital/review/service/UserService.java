@@ -7,6 +7,7 @@ import com.hospital.review.exception.ErrorCode;
 import com.hospital.review.exception.HospitalReviewAppException;
 import com.hospital.review.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder encoder;
 
     public UserDto join(UserJoinRequest request) {
 //        // 검색한 유저 네임이 없을 때.
@@ -26,7 +28,7 @@ public class UserService {
                     throw new HospitalReviewAppException(ErrorCode.DUPLICATED_USER_NAME,ErrorCode.DUPLICATED_USER_NAME.getMessage());
                 });
         //회원가입
-        User savedUser = userRepository.save(request.toEntity());
+        User savedUser = userRepository.save(request.toEntity(encoder.encode(request.getPassword())));
         return UserDto.builder()
                 .id(savedUser.getId())
                 .userName(savedUser.getUserName())
